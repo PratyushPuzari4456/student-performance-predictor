@@ -1,0 +1,1 @@
+{"rows": 2000, "mae": 3.87, "r2": 0.64, "medians": {"semester": 5.0, "current_cgpa": 7.0, "last_sgpa": 6.98, "backlogs": 2.0, "attendance_percent": 77.3, "internal_marks": 64.8, "assignment_avg": 69.45, "study_hours_per_week": 13.9, "sleep_hours_per_night": 7.0, "internet_hours_per_day": 3.1, "motivation_level": 3.0, "family_support_level": 3.0, "part_time_job": 1.0}}
