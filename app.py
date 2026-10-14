@@ -14,6 +14,7 @@ METRICS_PATH = BASE_DIR / "models" / "metrics.json"
 st.set_page_config(page_title="EduPredict | Indian College Student Performance Predictor", page_icon="🎓", layout="wide")
 
 CSS = """
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] { font-family: 'Poppins', sans-serif; }
@@ -121,6 +122,7 @@ div[role="radiogroup"] label:has(input:checked) p { color:#ffffff !important; }
 
 .footer-bar { margin-top:2rem; padding:1rem 1.4rem; border-radius:16px; text-align:center;
   font-size:.85rem; color:#e8f0f7; background:linear-gradient(90deg,#0f2027,#203a43,#2c5364); }
+</style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
