@@ -14,23 +14,23 @@ METRICS_PATH = BASE_DIR / "models" / "metrics.json"
 st.set_page_config(page_title="EduPredict | Indian College Student Performance Predictor", page_icon="🎓", layout="wide")
 
 CSS = """
-<style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 html, body, [class*="css"] { font-family: 'Poppins', sans-serif; }
-#MainMenu, footer, header { visibility: hidden; }
+#MainMenu, footer { visibility: hidden; }
+header { background: transparent; }
+header [data-testid="stToolbar"] { visibility: hidden; }
 
 @keyframes gradientMove {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 @keyframes pulse {0%,100%{box-shadow:0 0 0 0 rgba(255,138,92,.35)}50%{box-shadow:0 0 0 12px rgba(255,138,92,0)}}
 @keyframes floatY {0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 
-/* ---------- TOP NAVBAR ---------- */
 .topbar {
   display:flex; justify-content:space-between; align-items:center;
   padding:.95rem 1.5rem; border-radius:16px;
   background:rgba(255,255,255,.88); backdrop-filter:blur(14px);
   border:1px solid #e6ecf3; box-shadow:0 6px 24px rgba(15,32,39,.08);
-  margin-bottom:1.3rem;
+  margin-bottom:1rem;
 }
 .brand { display:flex; gap:.7rem; align-items:center; font-weight:800; color:#123047; font-size:1.18rem; }
 .brand .logo { font-size:1.7rem; }
@@ -39,30 +39,27 @@ html, body, [class*="css"] { font-family: 'Poppins', sans-serif; }
   color:#0a8f4d; border:1px solid #b5ecd0; font-weight:700; margin-left:.4rem; }
 .status-chip.blue { background:#eef4ff; color:#2c5cc5; border-color:#c9daff; }
 
-/* ---------- SIDEBAR NAV PILLS ---------- */
 section[data-testid="stSidebar"] { background: linear-gradient(180deg,#0f2027,#203a43 60%,#2c5364); }
 .logo-glow { text-shadow: 0 0 22px rgba(255,215,111,.7); }
 .nav-caption { font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:#8fb3c7;
   margin:1.2rem 0 .5rem .15rem; font-weight:700; }
 
-div[role="radiogroup"] { gap:.55rem; display:flex; flex-direction:column; }
+/* ---------- NAV PILLS (visible on desktop AND phone) ---------- */
+div[role="radiogroup"] { display:flex; flex-wrap:wrap; gap:.55rem; justify-content:center; }
 div[role="radiogroup"] label {
-  display:flex; align-items:center;
-  padding:.82rem 1.1rem; border-radius:13px;
-  background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12);
-  cursor:pointer; transition:all .25s ease; margin:0;
+  display:flex; align-items:center; padding:.72rem 1.2rem; border-radius:999px;
+  background:#ffffff; border:1px solid #e6ecf3; cursor:pointer;
+  transition:all .25s ease; margin:0; box-shadow:0 4px 14px rgba(15,32,39,.06);
 }
-div[role="radiogroup"] label:hover { background:rgba(255,255,255,.16); transform:translateX(5px); }
-div[role="radiogroup"] label p { margin:0; color:#dce9f2 !important; font-weight:600; font-size:.95rem; }
+div[role="radiogroup"] label:hover { transform:translateY(-2px); box-shadow:0 8px 20px rgba(15,32,39,.12); }
+div[role="radiogroup"] label p { margin:0; color:#123047 !important; font-weight:600; font-size:.92rem; }
 div[role="radiogroup"] input[type="radio"] { display:none; }
 div[role="radiogroup"] label:has(input:checked) {
   background:linear-gradient(90deg,#ff8a5c,#ff5c8a);
-  border-color:transparent;
-  box-shadow:0 8px 22px rgba(255,92,138,.35);
+  border-color:transparent; box-shadow:0 8px 22px rgba(255,92,138,.35);
 }
 div[role="radiogroup"] label:has(input:checked) p { color:#ffffff !important; }
 
-/* ---------- HERO / CARDS ---------- */
 .hero {
   padding:2.6rem 2.4rem; border-radius:22px;
   background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#6a3093);
@@ -104,7 +101,6 @@ div[role="radiogroup"] label:has(input:checked) p { color:#ffffff !important; }
   padding:.75rem 1.05rem; margin-bottom:.6rem; font-size:.95rem; color:#28405a;
   box-shadow:0 4px 16px rgba(15,32,39,.06); }
 
-/* ---------- BUTTONS ---------- */
 .stFormSubmitButton button, .stButton button, .stDownloadButton button {
   background:linear-gradient(90deg,#ff8a5c,#ff5c8a);
   color:#ffffff; font-weight:700; border:none; border-radius:14px;
@@ -115,7 +111,6 @@ div[role="radiogroup"] label:has(input:checked) p { color:#ffffff !important; }
   transform:translateY(-2px); box-shadow:0 12px 28px rgba(255,92,138,.42); color:#ffffff;
 }
 
-/* ---------- TABLE / FOOTER ---------- */
 .grade-table { width:100%; border-collapse:collapse; border-radius:14px; overflow:hidden;
   box-shadow:0 6px 24px rgba(15,32,39,.08); }
 .grade-table th { background:linear-gradient(90deg,#203a43,#2c5364); color:#fff;
@@ -126,7 +121,6 @@ div[role="radiogroup"] label:has(input:checked) p { color:#ffffff !important; }
 
 .footer-bar { margin-top:2rem; padding:1rem 1.4rem; border-radius:16px; text-align:center;
   font-size:.85rem; color:#e8f0f7; background:linear-gradient(90deg,#0f2027,#203a43,#2c5364); }
-</style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
@@ -288,12 +282,6 @@ with st.sidebar:
         "</div>",
         unsafe_allow_html=True,
     )
-    st.markdown("<div class='nav-caption'>Menu</div>", unsafe_allow_html=True)
-    page = st.radio(
-        "Navigation",
-        ["🏠 Home", "🎯 Predict Performance", "📊 Batch Analysis", "ℹ️ About & Help"],
-        label_visibility="collapsed",
-    )
     st.markdown("<div class='nav-caption'>Model Status</div>", unsafe_allow_html=True)
     st.markdown(
         "<div class='card' style='padding:.95rem 1.05rem;'>"
@@ -317,6 +305,13 @@ st.markdown(
     "</div>",
     unsafe_allow_html=True,
 )
+page = st.radio(
+    "Navigation",
+    ["🏠 Home", "🎯 Predict Performance", "📊 Batch Analysis", "ℹ️ About & Help"],
+    horizontal=True,
+    label_visibility="collapsed",
+)
+st.markdown("<div style='height:.8rem;'></div>", unsafe_allow_html=True)
 
 # ================= HOME =================
 if page == "🏠 Home":
